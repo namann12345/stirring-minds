@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: autonomous-report-backend
+    env: python
+    runtime: python-3.10
+    repo: https://github.com/<your-username>/<your-repo>
+    branch: main
+    rootDir: backend
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt
+    startCommand: gunicorn -w 2 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:$PORT --timeout 120
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: "report_generator"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: CORS_ORIGINS
+        value: "https://ai-autonomous-report-generator-hypr.vercel.app"
+      - key: PORT
+        value: "8000"
