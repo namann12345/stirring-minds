@@ -22,7 +22,7 @@ function LoginPage({ onLogin, onSwitchToSignUp }) {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ function SignUpPage({ onSignUp, onSwitchToLogin }) {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/register', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -519,7 +519,7 @@ export default function App() {
 }
 
 // API Service functions (you can also move these to a separate file)
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 // Helper function for API calls
 export const apiCall = async (endpoint, options = {}) => {

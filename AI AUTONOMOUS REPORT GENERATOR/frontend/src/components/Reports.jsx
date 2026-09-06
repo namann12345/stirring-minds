@@ -112,8 +112,8 @@ const CSVUploadModal = ({ isOpen, onClose, theme, onUploadComplete }) => {
       formData.append('department', uploadConfig.department);
 
       let token = localStorage.getItem('token') || localStorage.getItem('access_token') || localStorage.getItem('auth_token');
-
-      let response = await fetch('http://localhost:8000/api/reports/upload-csv', {
+console.log(import.meta.env.VITE_API_URL);
+      let response = await fetch(`${import.meta.env.VITE_API_URL}/api/reports/upload-csv`, {
         method: 'POST',
         headers: {
           ...(token && { 'Authorization': `Bearer ${token}` })
@@ -125,7 +125,7 @@ const CSVUploadModal = ({ isOpen, onClose, theme, onUploadComplete }) => {
       if (response.status === 401 || !token) {
         console.log('🔄 Session token expired or missing, auto-authenticating demo session...');
         try {
-          let loginRes = await fetch('http://localhost:8000/api/auth/login', {
+          let loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: 'analyst@company.com', password: 'password123' })
@@ -134,7 +134,7 @@ const CSVUploadModal = ({ isOpen, onClose, theme, onUploadComplete }) => {
           let authData = loginRes.ok ? await loginRes.json() : null;
 
           if (!authData) {
-            let regRes = await fetch('http://localhost:8000/api/auth/register', {
+            let regRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -159,7 +159,7 @@ const CSVUploadModal = ({ isOpen, onClose, theme, onUploadComplete }) => {
             retryFormData.append('file', selectedFile);
             retryFormData.append('department', uploadConfig.department);
 
-            response = await fetch('http://localhost:8000/api/reports/upload-csv', {
+            response = await fetch(`${import.meta.env.VITE_API_URL}/reports/upload-csv`, {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${token}` },
               body: retryFormData
@@ -221,7 +221,7 @@ const CSVUploadModal = ({ isOpen, onClose, theme, onUploadComplete }) => {
   const downloadPDF = async (reportId) => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access_token') || localStorage.getItem('auth_token');
-      const response = await fetch(`http://localhost:8000/api/reports/download/${reportId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reports/download/${reportId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -563,7 +563,7 @@ const ReportPreviewModal = ({ report, isOpen, onClose, theme }) => {
   const downloadPDF = async (reportId) => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access_token') || localStorage.getItem('auth_token');
-      const response = await fetch(`http://localhost:8000/api/reports/download/${reportId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reports/download/${reportId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -709,7 +709,7 @@ export default function Reports({ theme }) {
     try {
       setLoading(true);
       let token = localStorage.getItem('token') || localStorage.getItem('access_token') || localStorage.getItem('auth_token');
-      let response = await fetch('http://localhost:8000/api/reports', {
+      let response = await fetch(`${import.meta.env.VITE_API_URL}/api/reports`, {
         headers: {
           ...(token && { 'Authorization': `Bearer ${token}` })
         }
@@ -717,14 +717,14 @@ export default function Reports({ theme }) {
 
       if (response.status === 401 || !token) {
         try {
-          let loginRes = await fetch('http://localhost:8000/api/auth/login', {
+          let loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: 'analyst@company.com', password: 'password123' })
           });
           let authData = loginRes.ok ? await loginRes.json() : null;
           if (!authData) {
-            let regRes = await fetch('http://localhost:8000/api/auth/register', {
+            let regRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -743,7 +743,7 @@ export default function Reports({ theme }) {
             localStorage.setItem('access_token', token);
             localStorage.setItem('auth_token', token);
             if (authData.user) localStorage.setItem('user', JSON.stringify(authData.user));
-            response = await fetch('http://localhost:8000/api/reports', {
+            response = await fetch(`${import.meta.env.VITE_API_URL}/api/reports`, {
               headers: { 'Authorization': `Bearer ${token}` }
             });
           }
@@ -797,7 +797,7 @@ export default function Reports({ theme }) {
   const handleDownloadPDF = async (reportId) => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access_token') || localStorage.getItem('auth_token');
-      const response = await fetch(`http://localhost:8000/api/reports/download/${reportId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reports/download/${reportId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
